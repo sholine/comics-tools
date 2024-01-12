@@ -2,6 +2,7 @@
 
 # Options par défaut
 verbose=false
+path="."  # Chemin par défaut
 
 # Gestion des options en ligne de commande
 while [[ "$#" -gt 0 ]]; do
@@ -10,12 +11,22 @@ while [[ "$#" -gt 0 ]]; do
             verbose=true
             shift
             ;;
+        -p|--path)
+            path="$2"
+            shift 2
+            ;;
         *)
             echo "Option non reconnue : $1"
             exit 1
             ;;
     esac
 done
+
+# Vérifier si le chemin spécifié existe
+if [ ! -d "$path" ]; then
+    echo "Le chemin spécifié n'existe pas : $path"
+    exit 1
+fi
 
 # Fonction pour afficher un message en mode verbose
 afficher_verbose() {
@@ -24,9 +35,9 @@ afficher_verbose() {
     fi
 }
 
-# Trouver les fichiers cbz/cbr dans le dossier courant et ses sous-dossiers
+# Trouver les fichiers cbz/cbr dans le dossier spécifié et ses sous-dossiers
 IFS=$'\n'  # Définir le séparateur d'entrée sur le saut de ligne
-liste_fichiers=($(find . -type f \( -iname "*.cbz" -o -iname "*.cbr" \)))
+liste_fichiers=($(find "$path" -type f \( -iname "*.cbz" -o -iname "*.cbr" \)))
 
 # Vérifier si la liste des fichiers est vide
 if [ ${#liste_fichiers[@]} -eq 0 ]; then
