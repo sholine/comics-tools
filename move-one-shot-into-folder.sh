@@ -38,9 +38,9 @@ afficher_verbose() {
 # Se déplacer vers le répertoire spécifié
 cd "$path" || exit 1
 
-# Trouver les fichiers cbz/cbr dans le dossier spécifié et ses sous-dossiers
+# Trouver les fichiers cbz/cbr du dossier spécifié, mais uniquement à la racine
 IFS=$'\n'  # Définir le séparateur d'entrée sur le saut de ligne
-liste_fichiers=($(find . -type f \( -iname "*.cbz" -o -iname "*.cbr" \)))
+liste_fichiers=($(find . -maxdepth 1 -type f \( -iname "*.cbz" -o -iname "*.cbr" \)))
 
 # Vérifier si la liste des fichiers est vide
 if [ ${#liste_fichiers[@]} -eq 0 ]; then
