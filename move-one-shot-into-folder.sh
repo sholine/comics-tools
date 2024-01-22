@@ -57,7 +57,7 @@ for fichier in "${liste_fichiers[@]}"; do
     ((compteur++))
 
     # Extraire le nom du dossier sans l'extension
-    my_folder=$(echo "$(basename "$fichier")" | sed -E 's/( - [0-9]{2}\.cbz| - [0-9]{2}\.cbr)$//')
+    my_folder=$(echo "$(basename "$fichier")" | sed -E 's/( - [0-9]{2}\.cbz| - [0-9]{2}\.cbr|\.cbz|\.cbr)$//')
     destination="$my_folder"
 
     afficher_verbose "($compteur/$total_fichiers) Création du dossier : $destination"
