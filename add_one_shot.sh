@@ -42,7 +42,7 @@ est_seul() {
 renommer_oneshot() {
     local fichier="$1"
     local nouveau_nom="${fichier%.*} [OneShot].${fichier##*.}"
-    #mv "$fichier" "$nouveau_nom"
+    mv "$fichier" "$nouveau_nom"
     afficher_log "Le fichier $fichier a été renommé en $nouveau_nom"
     ((files_processed++))
 }
