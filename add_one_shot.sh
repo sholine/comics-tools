@@ -3,6 +3,9 @@
 # Options par défaut
 path="."
 
+# Compteur de fichiers traités
+files_processed=0
+
 # Gestion des options en ligne de commande
 while [[ "$#" -gt 0 ]]; do
     case $1 in
@@ -23,9 +26,9 @@ if [ ! -d "$path" ]; then
     exit 1
 fi
 
-# Fonction pour afficher un message de log
+# Fonction pour afficher un message de log avec le compteur de fichiers traités
 afficher_log() {
-    echo "[$(date +"%Y-%m-%d %H:%M:%S")] $1"
+    echo "[$files_processed/$total_files] $1"
 }
 
 # Fonction pour vérifier si un répertoire ne contient qu'un seul fichier
@@ -41,6 +44,7 @@ renommer_oneshot() {
     local nouveau_nom="${fichier%.*} [OneShot].${fichier##*.}"
     #mv "$fichier" "$nouveau_nom"
     afficher_log "Le fichier $fichier a été renommé en $nouveau_nom"
+    ((files_processed++))
 }
 
 # Se déplacer vers le répertoire spécifié
@@ -49,6 +53,9 @@ cd "$path" || exit 1
 # Trouver tous les fichiers cbz/cbr du dossier spécifié, y compris les sous-dossiers
 IFS=$'\n'  # Définir le séparateur d'entrée sur le saut de ligne
 liste_fichiers=($(find . -type f \( -iname "*.cbz" -o -iname "*.cbr" \)))
+
+# Total des fichiers à traiter
+total_files=${#liste_fichiers[@]}
 
 # Parcourir chaque fichier trouvé
 for fichier in "${liste_fichiers[@]}"; do
